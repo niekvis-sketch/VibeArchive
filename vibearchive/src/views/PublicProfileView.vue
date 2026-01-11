@@ -57,8 +57,7 @@ onMounted(async () => {
           <div v-else class="projects-grid">
               <div v-for="project in projects" :key="project.id" class="project-mini-card glass-panel">
                   <div class="project-image">
-                       <img v-if="project.imageUrl" :src="project.imageUrl" alt="Project Image">
-                       <div v-else class="placeholder"></div>
+                       <img :src="project.imageUrl || '/PlaceholderFoto.svg'" alt="Project Image">
                   </div>
                   <div class="project-info">
                       <h3>{{ project.name }}</h3>

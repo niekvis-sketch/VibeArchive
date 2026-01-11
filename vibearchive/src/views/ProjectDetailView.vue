@@ -15,7 +15,7 @@ onMounted(async () => {
 })
 
 const imageUrl = computed(() => {
-  return project.value?.imageUrl || 'https://placehold.co/800x400/0a0e27/00f0ff?text=No+Image'
+  return project.value?.imageUrl || '/PlaceholderFoto.svg'
 })
 
 const handleDelete = async () => {

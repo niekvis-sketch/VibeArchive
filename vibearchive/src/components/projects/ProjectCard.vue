@@ -11,7 +11,7 @@ const props = defineProps({
 
 // Check if image exists, otherwise use placeholder
 const imageUrl = computed(() => {
-  return props.project.imageUrl || 'https://placehold.co/600x400/0a0e27/00f0ff?text=No+Image'
+  return props.project.imageUrl || '/PlaceholderFoto.svg'
 })
 </script>
 
