@@ -12,6 +12,15 @@ const requireAuth = (to, from, next) => {
   }
 }
 
+const requireNoAuth = (to, from, next) => {
+  const user = auth.currentUser
+  if (user) {
+    next('/projects')
+  } else {
+    next()
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,12 +32,14 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/auth/LoginView.vue')
+      component: () => import('../views/auth/LoginView.vue'),
+      beforeEnter: requireNoAuth
     },
     {
       path: '/signup',
       name: 'signup',
-      component: () => import('../views/auth/SignupView.vue')
+      component: () => import('../views/auth/SignupView.vue'),
+      beforeEnter: requireNoAuth
     },
     {
       path: '/projects',
