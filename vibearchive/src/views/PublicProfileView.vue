@@ -60,16 +60,16 @@ onMounted(async () => {
                        <img :src="project.imageUrl || '/PlaceholderFoto.svg'" alt="Project Image">
                   </div>
                   <div class="project-info">
-                      <h3>{{ project.name }}</h3>
-                      <a 
-                        v-if="project.liveUrl" 
-                        :href="project.liveUrl" 
-                        target="_blank" 
-                        rel="noopener"
-                        class="live-link"
-                      >
-                        Live Demo ↗
-                      </a>
+                      <h3>
+                        <RouterLink :to="{ name: 'project-detail', params: { id: project.id }}" class="project-title-link">
+                            {{ project.name }}
+                        </RouterLink>
+                      </h3>
+                      <div class="card-actions">
+                         <RouterLink :to="{ name: 'project-detail', params: { id: project.id }, hash: '#comments-section' }" class="comment-link">
+                            💬 Comment
+                         </RouterLink>
+                      </div>
                   </div>
               </div>
           </div>
@@ -155,6 +155,33 @@ onMounted(async () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.project-title-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+.project-title-link:hover {
+    color: var(--color-primary);
+}
+
+.card-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.comment-link {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.comment-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
 }
 
 .project-info h3 {

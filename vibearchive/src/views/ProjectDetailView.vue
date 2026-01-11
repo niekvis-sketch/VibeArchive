@@ -2,16 +2,23 @@
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, computed } from 'vue'
 import { useProjects } from '../composables/useProjects'
+import { useAuth } from '../composables/useAuth'
 import BaseButton from '../components/ui/BaseButton.vue'
+import ProjectComments from '../components/projects/ProjectComments.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { getProject, deleteProject, loading, error } = useProjects()
+const { user } = useAuth()
 
 const project = ref(null)
 
 onMounted(async () => {
     project.value = await getProject(route.params.id)
+})
+
+const isOwner = computed(() => {
+    return user.value && project.value && user.value.uid === project.value.userId
 })
 
 const imageUrl = computed(() => {
@@ -23,6 +30,10 @@ const handleDelete = async () => {
         await deleteProject(project.value.id)
         router.push('/projects')
     }
+}
+
+const scrollToComments = () => {
+    document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -42,12 +53,17 @@ const handleDelete = async () => {
             ← Back
         </BaseButton>
         <div class="right-actions">
-            <BaseButton @click="router.push(`/projects/${project.id}/edit`)">
-                Edit Project
+            <BaseButton v-if="!isOwner" class="comment-btn" @click="scrollToComments">
+                Leave a Comment
             </BaseButton>
-            <BaseButton variant="danger" @click="handleDelete">
-                Delete
-            </BaseButton>
+            <template v-if="isOwner">
+                <BaseButton @click="router.push(`/projects/${project.id}/edit`)">
+                    Edit Project
+                </BaseButton>
+                <BaseButton variant="danger" @click="handleDelete">
+                    Delete
+                </BaseButton>
+            </template>
         </div>
     </div>
 
@@ -87,6 +103,9 @@ const handleDelete = async () => {
             </div>
         </div>
     </div>
+
+    <!-- Comments Section -->
+    <ProjectComments :projectId="project.id" :ownerId="project.userId" />
   </div>
   
   <div v-else class="loading-state">
