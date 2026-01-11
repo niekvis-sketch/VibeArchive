@@ -37,6 +37,7 @@ const toggleNotifications = () => {
       <div class="links">
         <template v-if="user">
           <RouterLink to="/projects" class="nav-item">Work</RouterLink>
+          <RouterLink to="/users" class="nav-item">Users</RouterLink>
           <RouterLink to="/analytics" class="nav-item">Stats</RouterLink>
           <RouterLink to="/projects/new" class="cta-btn-small">
               <span>+ New</span>

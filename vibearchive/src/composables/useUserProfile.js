@@ -1,12 +1,30 @@
 import { ref } from 'vue'
 import { auth, db, storage } from '../firebase/config'
-import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, setDoc, collection, getDocs } from 'firebase/firestore'
 import { updateProfile } from 'firebase/auth'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 export function useUserProfile() {
   const loading = ref(false)
   const error = ref(null)
+
+  const getAllUsers = async () => {
+    loading.value = true
+    error.value = null
+    try {
+        const querySnapshot = await getDocs(collection(db, 'users'))
+        const users = []
+        querySnapshot.forEach((doc) => {
+            users.push({ id: doc.id, ...doc.data() })
+        })
+        return users
+    } catch (err) {
+        error.value = err.message
+        return []
+    } finally {
+        loading.value = false
+    }
+  }
 
   const getUserProfile = async (userId) => {
     loading.value = true
@@ -109,10 +127,5 @@ export function useUserProfile() {
     }
   }
 
-  return {
-    getUserProfile,
-    updateUserProfile,
-    loading,
-    error
-  }
+  return { getUserProfile, updateUserProfile, getAllUsers, loading, error }
 }

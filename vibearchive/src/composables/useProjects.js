@@ -124,6 +124,26 @@ export function useProjects() {
         }
     };
 
+    const getUserProjects = async (userId) => {
+        error.value = null;
+        loading.value = true;
+        try {
+            const q = query(collection(db, 'projects'), where('userId', '==', userId));
+            const querySnapshot = await getDocs(q);
+            const results = [];
+            querySnapshot.forEach((doc) => {
+                results.push({ ...doc.data(), id: doc.id });
+            });
+            return results;
+        } catch (err) {
+             error.value = err.message;
+             console.error(err);
+             return [];
+        } finally {
+             loading.value = false;
+        }
+    };
+
     const deleteProject = async (id) => {
         error.value = null;
         loading.value = true;
@@ -137,5 +157,5 @@ export function useProjects() {
         }
     };
 
-    return { addProject, getProjects, getProject, updateProject, deleteProject, error, loading };
+    return { addProject, getProjects, getProject, updateProject, deleteProject, getUserProjects, error, loading };
 }
