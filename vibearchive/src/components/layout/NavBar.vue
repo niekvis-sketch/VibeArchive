@@ -23,7 +23,7 @@ const toggleUserMenu = () => {
 <template>
   <nav class="glass-panel">
     <div class="container nav-content">
-      <RouterLink to="/" class="logo">
+      <RouterLink :to="user ? '/projects' : '/'" class="logo">
         <span class="gradient-text">Vibe-Archive</span>
       </RouterLink>
       
