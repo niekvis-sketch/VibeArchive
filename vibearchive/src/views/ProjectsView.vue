@@ -36,13 +36,25 @@ const { searchQuery, filteredProjects } = useSearch(projects)
 </template>
 
 <style scoped>
+.projects-view {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .view-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-wrap: nowrap; /* Prevent wrapping if possible */
+  gap: 2rem;
+  position: sticky;
+  top: 85px;
+  z-index: 90;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-container {

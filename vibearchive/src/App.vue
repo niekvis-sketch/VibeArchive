@@ -22,11 +22,13 @@ import NavBar from './components/layout/NavBar.vue'
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 main {
   flex: 1;
   padding: 2rem 0;
+  width: 100%;
 }
 
 .fade-enter-active,

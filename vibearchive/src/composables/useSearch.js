@@ -6,10 +6,14 @@ export function useSearch(projects) {
     // Additional filter refs...
 
     const filteredProjects = computed(() => {
-        if (!searchQuery.value) return projects.value;
+        const query = searchQuery.value.trim().toLowerCase();
+        
+        // Return all projects if query is less than 3 characters
+        if (!query || query.length < 3) return projects.value;
+        
         return projects.value.filter(p => 
-            p.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
-            p.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+            p.name.toLowerCase().includes(query) || 
+            p.description.toLowerCase().includes(query)
         );
     });
 

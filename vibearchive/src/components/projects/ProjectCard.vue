@@ -71,7 +71,7 @@ const imageUrl = computed(() => {
 
 .card-image {
   position: relative;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
 }
 
