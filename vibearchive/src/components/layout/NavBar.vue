@@ -7,7 +7,6 @@ const { user, logout } = useAuth()
 const router = useRouter()
 
 const showUserMenu = ref(false)
-const showNotifications = ref(false)
 
 const handleLogout = async () => {
     await logout()
@@ -17,13 +16,7 @@ const handleLogout = async () => {
 
 // Click outside directive logic or simple toggle
 const toggleUserMenu = () => {
-    showNotifications.value = false
     showUserMenu.value = !showUserMenu.value
-}
-
-const toggleNotifications = () => {
-    showUserMenu.value = false
-    showNotifications.value = !showNotifications.value
 }
 </script>
 
@@ -42,40 +35,6 @@ const toggleNotifications = () => {
           <RouterLink to="/projects/new" class="cta-btn-small">
               <span>+ New</span>
           </RouterLink>
-          
-          <!-- Notifications -->
-          <div class="nav-icon-wrapper">
-              <button class="icon-btn" @click="toggleNotifications">
-                  🔔
-                  <span class="badge">2</span>
-              </button>
-              
-              <div v-if="showNotifications" class="dropdown-menu notifications-dropdown glass-panel">
-                  <div class="dropdown-header">
-                      <span>Notifications</span>
-                      <button class="text-link">Mark all read</button>
-                  </div>
-                  <div class="notification-list">
-                      <div class="notif-item unread">
-                          <span class="notif-icon">💬</span>
-                          <div class="notif-text">
-                              <p>New comment on <strong>Vape Calc</strong></p>
-                              <span class="time">2h ago</span>
-                          </div>
-                      </div>
-                      <div class="notif-item">
-                          <span class="notif-icon">🚀</span>
-                          <div class="notif-text">
-                              <p>Weekly summary ready</p>
-                              <span class="time">1d ago</span>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="dropdown-footer">
-                      <RouterLink to="/settings" @click="showNotifications = false">View Settings</RouterLink>
-                  </div>
-              </div>
-          </div>
           
           <!-- User Menu -->
           <div class="nav-icon-wrapper">
@@ -248,11 +207,6 @@ nav {
     animation: fadeIn 0.2s ease-out;
 }
 
-.notifications-dropdown {
-    width: 350px;
-    padding: 0;
-}
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -296,66 +250,6 @@ hr {
 
 .menu-item.danger:hover {
     background: rgba(248, 113, 113, 0.1);
-}
-
-/* Notification specific */
-.dropdown-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-}
-
-.text-link {
-    background: none;
-    border: none;
-    color: var(--primary-color, #6366f1);
-    font-size: 0.8rem;
-    cursor: pointer;
-}
-
-.notification-list {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.notif-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.notif-item:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.notif-item.unread {
-    background: rgba(99, 102, 241, 0.05);
-}
-
-.notif-icon {
-    font-size: 1.25rem;
-}
-
-.notif-text p {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-}
-
-.time {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-}
-
-.dropdown-footer {
-    padding: 0.75rem;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.85rem;
 }
 
 .nav-item::after {

@@ -59,14 +59,6 @@ export function useUserProfile() {
                     language: 'en',
                     timezone: 'UTC',
                     dateFormat: 'DD-MM-YYYY'
-                },
-                notifications: {
-                    emailComments: 'instant',
-                    emailShares: true,
-                    weeklyDigest: true,
-                    productUpdates: true,
-                    desktopNotifications: false,
-                    soundEffects: true
                 }
             },
             stats: {

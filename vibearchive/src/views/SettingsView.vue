@@ -12,14 +12,12 @@ const loading = ref(true)
 const originalSettings = ref(null)
 const settings = ref({
     privacy: {},
-    preferences: {},
-    notifications: {}
+    preferences: {}
 })
 const hasChanges = ref(false)
 
 const tabs = [
     { id: 'general', label: 'General' },
-    { id: 'notifications', label: 'Notifications' },
     { id: 'security', label: 'Security' },
     { id: 'data', label: 'Data & Privacy' }
 ]
@@ -140,41 +138,6 @@ const discardChanges = () => {
                   </div>
               </div>
 
-              <!-- Notification Settings -->
-              <div v-if="activeTab === 'notifications'" class="tab-content">
-                  <h2>Notifications</h2>
-                  
-                  <div class="section-title">Email Notifications</div>
-                  <div class="setting-group">
-                      <label>New comments on my project</label>
-                      <select v-model="settings.notifications.emailComments" class="select-input">
-                          <option value="instant">Instant</option>
-                          <option value="daily">Daily Digest</option>
-                          <option value="off">Off</option>
-                      </select>
-                  </div>
-                  
-                  <div class="setting-group checkbox-row">
-                      <label>Weekly Activity Summary</label>
-                      <input type="checkbox" v-model="settings.notifications.weeklyDigest" class="toggle">
-                  </div>
-
-                  <div class="setting-group checkbox-row">
-                      <label>Product Updates & Announcements</label>
-                      <input type="checkbox" v-model="settings.notifications.productUpdates" class="toggle">
-                  </div>
-                  
-                  <div class="section-title mt-6">In-App</div>
-                   <div class="setting-group checkbox-row">
-                      <label>Desktop Notifications</label>
-                      <input type="checkbox" v-model="settings.notifications.desktopNotifications" class="toggle">
-                  </div>
-                  <div class="setting-group checkbox-row">
-                      <label>Sound Effects</label>
-                      <input type="checkbox" v-model="settings.notifications.soundEffects" class="toggle">
-                  </div>
-              </div>
-              
                <!-- Security Settings -->
               <div v-if="activeTab === 'security'" class="tab-content">
                   <h2>Security</h2>
