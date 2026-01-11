@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* --- Palette --- */
+  --bg-dark: #0a0e1a;
+  --bg-panel: rgba(20, 24, 36, 0.6);
+  --bg-panel-hover: rgba(30, 34, 46, 0.7);
+  
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: #a0aec0;
+  
+  --accent-cyan: #00d4ff;
+  --accent-purple: #7b2ff7;
+  --accent-pink: #ff006e;
+  --accent-green: #39ff14;
+  
+  /* --- Gradients --- */
+  --gradient-main: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  --gradient-hover: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+  --gradient-text: linear-gradient(to right, #fff, #a0aec0);
+  --gradient-glow: radial-gradient(circle at center, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+
+  /* --- Glassmorphism / Clean Look --- */
+  /* Reduced blur significantly for sharper look */
+  --glass-blur: 0px; 
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.4);
+  
+  /* Increased opacity for panels so they aren't too see-through/messy */
+  --bg-panel: rgba(20, 24, 36, 0.95);
+  --bg-panel-hover: rgba(30, 34, 46, 1);
+  
+  /* --- Transitions --- */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --speed-fast: 0.2s;
+  --speed-normal: 0.4s;
+  
+  /* --- Fonts --- */
+  --font-display: 'Orbitron', 'Space Grotesk', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Cursor */
+html {
+    cursor: auto;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+  font-size: 16px;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(123, 47, 247, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 212, 255, 0.08), transparent 25%);
+  background-attachment: fixed;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 4rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.75rem; }
+
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--speed-fast);
+}
+
+/* --- Utilities --- */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+main.container {
+  padding-top: 4rem; /* Standard spacing, no overlap compensation */
+  padding-bottom: 4rem;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* --- Glass Panel --- */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 24px;
+  transition: all var(--speed-normal) var(--ease-spring);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .container { padding: 0 20px; }
+    
+    * {
+        cursor: auto; /* Reset custom cursor for touch */
+    }
+}
