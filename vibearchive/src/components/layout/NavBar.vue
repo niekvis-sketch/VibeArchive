@@ -8,16 +8,26 @@ const { user, logout } = useAuth()
 const router = useRouter()
 
 const showUserMenu = ref(false)
+const mobileMenuOpen = ref(false)
 
 const handleLogout = async () => {
     await logout()
     showUserMenu.value = false
+    mobileMenuOpen.value = false
     router.push('/login')
 }
 
 // Click outside directive logic or simple toggle
 const toggleUserMenu = () => {
     showUserMenu.value = !showUserMenu.value
+}
+
+const toggleMobileMenu = () => {
+    mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+const closeMobileMenu = () => {
+    mobileMenuOpen.value = false
 }
 </script>
 
@@ -29,6 +39,7 @@ const toggleUserMenu = () => {
         <span class="logo-accent">✦</span>
       </RouterLink>
       
+      <!-- Desktop Nav Links -->
       <div class="nav-links">
         <template v-if="user">
           <RouterLink to="/" class="nav-item">Home</RouterLink>
@@ -44,15 +55,15 @@ const toggleUserMenu = () => {
 
       <div class="nav-actions">
         <template v-if="user">
-          <RouterLink to="/projects/new" class="btn-cta">
+          <RouterLink to="/projects/new" class="btn-cta desktop-only">
             <span>+ New Project</span>
           </RouterLink>
           
           <!-- Notification Bell -->
-          <NotificationBell />
+          <NotificationBell class="desktop-only" />
           
           <!-- User Menu -->
-          <div class="user-menu-wrapper">
+          <div class="user-menu-wrapper desktop-only">
             <div class="user-avatar" @click="toggleUserMenu">
               <img :src="user.photoURL || 'https://api.dicebear.com/7.x/shapes/svg?seed=' + user.uid" />
             </div>
@@ -80,10 +91,95 @@ const toggleUserMenu = () => {
           </div>
         </template>
         <template v-else>
-          <RouterLink to="/signup" class="btn-cta">Get in touch</RouterLink>
+          <RouterLink to="/signup" class="btn-cta desktop-only">Get in touch</RouterLink>
         </template>
+        
+        <!-- Hamburger Menu Button (Mobile Only) -->
+        <button class="hamburger-btn" @click="toggleMobileMenu" :class="{ 'is-active': mobileMenuOpen }">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
       </div>
     </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <Transition name="mobile-menu">
+      <div v-if="mobileMenuOpen" class="mobile-menu-overlay" @click="closeMobileMenu"></div>
+    </Transition>
+    
+    <!-- Mobile Menu -->
+    <Transition name="mobile-slide">
+      <div v-if="mobileMenuOpen" class="mobile-menu">
+        <div class="mobile-menu-content">
+          <!-- User Info (if logged in) -->
+          <div v-if="user" class="mobile-user-info">
+            <div class="mobile-user-avatar">
+              <img :src="user.photoURL || 'https://api.dicebear.com/7.x/shapes/svg?seed=' + user.uid" />
+            </div>
+            <div class="mobile-user-details">
+              <p class="mobile-user-name">{{ user.displayName || 'User' }}</p>
+              <p class="mobile-user-email">{{ user.email }}</p>
+            </div>
+          </div>
+          
+          <div class="mobile-nav-links">
+            <template v-if="user">
+              <RouterLink to="/" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">🏠</span> Home
+              </RouterLink>
+              <RouterLink to="/projects" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">📁</span> Projects
+              </RouterLink>
+              <RouterLink to="/users" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">👥</span> Users
+              </RouterLink>
+              <RouterLink to="/projects/new" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">➕</span> New Project
+              </RouterLink>
+              
+              <div class="mobile-menu-divider"></div>
+              
+              <RouterLink to="/profile" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">👤</span> Profile
+              </RouterLink>
+              <RouterLink to="/analytics" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">📊</span> Analytics
+              </RouterLink>
+              <RouterLink to="/settings" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">⚙️</span> Settings
+              </RouterLink>
+              
+              <div class="mobile-menu-divider"></div>
+              
+              <button class="mobile-nav-item danger" @click="handleLogout">
+                <span class="mobile-nav-icon">🚪</span> Logout
+              </button>
+            </template>
+            <template v-else>
+              <RouterLink to="/" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">🏠</span> Home
+              </RouterLink>
+              <RouterLink to="/login" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">ℹ️</span> About
+              </RouterLink>
+              <RouterLink to="/login" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">📁</span> Projects
+              </RouterLink>
+              
+              <div class="mobile-menu-divider"></div>
+              
+              <RouterLink to="/login" class="mobile-nav-item" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">🔑</span> Login
+              </RouterLink>
+              <RouterLink to="/signup" class="mobile-nav-item highlight" @click="closeMobileMenu">
+                <span class="mobile-nav-icon">✨</span> Get Started
+              </RouterLink>
+            </template>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </nav>
 </template>
 
@@ -308,5 +404,218 @@ const toggleUserMenu = () => {
 
 .menu-item.danger:hover {
   background: rgba(239, 68, 68, 0.1);
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1001;
+}
+
+@media (min-width: 768px) {
+  .hamburger-btn {
+    display: none;
+  }
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Desktop Only Items */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-only {
+    display: flex;
+  }
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  max-width: 85vw;
+  height: 100vh;
+  background: var(--bg-card);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 100;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+}
+
+.mobile-menu-content {
+  padding: 80px 20px 24px;
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--accent-orange);
+}
+
+.mobile-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.mobile-user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.mobile-user-email {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: all var(--speed-fast) var(--ease-smooth);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.router-link-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.mobile-nav-item.highlight {
+  background: var(--accent-orange);
+  color: white;
+}
+
+.mobile-nav-item.highlight:hover {
+  background: var(--accent-orange-light);
+}
+
+.mobile-nav-item.danger {
+  color: var(--accent-danger);
+}
+
+.mobile-nav-item.danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.mobile-nav-icon {
+  font-size: 1.125rem;
+  width: 24px;
+  text-align: center;
+}
+
+.mobile-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+}
+
+/* Mobile Menu Transitions */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: opacity 0.3s var(--ease-smooth);
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+}
+
+.mobile-slide-enter-active,
+.mobile-slide-leave-active {
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.mobile-slide-enter-from,
+.mobile-slide-leave-to {
+  transform: translateX(100%);
 }
 </style>
