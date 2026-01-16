@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
+import NotificationBell from '../ui/NotificationBell.vue'
 
 const { user, logout } = useAuth()
 const router = useRouter()
@@ -46,6 +47,9 @@ const toggleUserMenu = () => {
           <RouterLink to="/projects/new" class="btn-cta">
             <span>+ New Project</span>
           </RouterLink>
+          
+          <!-- Notification Bell -->
+          <NotificationBell />
           
           <!-- User Menu -->
           <div class="user-menu-wrapper">

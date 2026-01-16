@@ -105,7 +105,7 @@ const scrollToComments = () => {
     </div>
 
     <!-- Comments Section -->
-    <ProjectComments :projectId="project.id" :ownerId="project.userId" />
+    <ProjectComments :projectId="project.id" :ownerId="project.userId" :projectName="project.name" />
   </div>
   
   <div v-else class="loading-state">

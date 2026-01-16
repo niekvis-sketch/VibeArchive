@@ -13,6 +13,10 @@ const props = defineProps({
   ownerId: {
     type: String,
     required: true
+  },
+  projectName: {
+    type: String,
+    default: 'your project'
   }
 })
 
@@ -31,7 +35,7 @@ const handleSubmit = async () => {
         author: user.value.displayName,
         userId: user.value.uid,
         createdAt: new Date()
-    })
+    }, props.ownerId, props.projectName)
     newComment.value = ''
     isSubmitting.value = false
 }

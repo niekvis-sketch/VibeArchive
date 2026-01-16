@@ -10,7 +10,7 @@ const router = useRouter()
       <div class="hero-content">
         <h1>
           Digital <br>
-          <span class="accent-text">Sanctuary</span>
+          <span class="accent-text">Archive</span>
         </h1>
         <p>Curating the future of digital experiences. Your personal archive for vibe-driven code.</p>
         
