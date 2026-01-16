@@ -84,11 +84,26 @@ onMounted(async () => {
     padding: 2rem;
 }
 
+@media (max-width: 640px) {
+    .public-profile-container {
+        padding: 1rem;
+    }
+}
+
 .profile-header {
     display: flex;
     align-items: center;
     gap: 2rem;
     padding: 2rem;
+}
+
+@media (max-width: 640px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
 }
 
 .avatar-large {
@@ -97,6 +112,14 @@ onMounted(async () => {
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid var(--primary-color);
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .avatar-large {
+        width: 100px;
+        height: 100px;
+    }
 }
 
 .avatar-large img {
@@ -108,6 +131,12 @@ onMounted(async () => {
 .profile-details h1 {
     font-size: 2.5rem;
     margin: 0 0 0.5rem 0;
+}
+
+@media (max-width: 640px) {
+    .profile-details h1 {
+        font-size: 1.75rem;
+    }
 }
 
 .bio {
@@ -122,10 +151,23 @@ onMounted(async () => {
     padding-bottom: 0.5rem;
 }
 
+@media (max-width: 640px) {
+    .section-title {
+        font-size: 1.25rem;
+    }
+}
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 /* Mini Card - Reduced Info as requested */
@@ -155,6 +197,15 @@ onMounted(async () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .project-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
 }
 
 .project-title-link {
@@ -171,6 +222,7 @@ onMounted(async () => {
     display: flex;
     gap: 1rem;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .comment-link {
@@ -192,6 +244,15 @@ onMounted(async () => {
     text-overflow: ellipsis;
     flex: 1;
     margin-right: 0.5rem;
+    min-width: 0;
+}
+
+@media (max-width: 640px) {
+    .project-info h3 {
+        white-space: normal;
+        font-size: 1.1rem;
+        margin-right: 0;
+    }
 }
 
 .live-link {
