@@ -1,100 +1,312 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuth } from '../../composables/useAuth'
+import NotificationBell from '../ui/NotificationBell.vue'
+
+const { user, logout } = useAuth()
+const router = useRouter()
+
+const showUserMenu = ref(false)
+
+const handleLogout = async () => {
+    await logout()
+    showUserMenu.value = false
+    router.push('/login')
+}
+
+// Click outside directive logic or simple toggle
+const toggleUserMenu = () => {
+    showUserMenu.value = !showUserMenu.value
+}
 </script>
 
 <template>
-  <nav class="glass-panel">
-    <div class="container nav-content">
-      <RouterLink to="/" class="logo">
-        <span class="gradient-text">Vibe-Archive</span>
+  <nav class="navbar">
+    <div class="nav-content">
+      <RouterLink :to="user ? '/projects' : '/'" class="logo">
+        <span class="logo-text">Vibe-Archive</span>
+        <span class="logo-accent">✦</span>
       </RouterLink>
       
-      <div class="links">
-        <RouterLink to="/projects" class="nav-item">Work</RouterLink>
-        <RouterLink to="/analytics" class="nav-item">Stats</RouterLink>
-        <RouterLink to="/projects/new" class="cta-btn">
-            <span>+ New</span>
-        </RouterLink>
+      <div class="nav-links">
+        <template v-if="user">
+          <RouterLink to="/" class="nav-item">Home</RouterLink>
+          <RouterLink to="/projects" class="nav-item">Projects</RouterLink>
+          <RouterLink to="/users" class="nav-item">Users</RouterLink>
+        </template>
+        <template v-else>
+          <RouterLink to="/" class="nav-item">Home</RouterLink>
+          <RouterLink to="/login" class="nav-item">About</RouterLink>
+          <RouterLink to="/login" class="nav-item">Projects</RouterLink>
+        </template>
+      </div>
+
+      <div class="nav-actions">
+        <template v-if="user">
+          <RouterLink to="/projects/new" class="btn-cta">
+            <span>+ New Project</span>
+          </RouterLink>
+          
+          <!-- Notification Bell -->
+          <NotificationBell />
+          
+          <!-- User Menu -->
+          <div class="user-menu-wrapper">
+            <div class="user-avatar" @click="toggleUserMenu">
+              <img :src="user.photoURL || 'https://api.dicebear.com/7.x/shapes/svg?seed=' + user.uid" />
+            </div>
+
+            <div v-if="showUserMenu" class="dropdown-menu">
+              <div class="user-info">
+                <p class="name">{{ user.displayName || 'User' }}</p>
+                <p class="email">{{ user.email }}</p>
+              </div>
+              <div class="menu-divider"></div>
+              <RouterLink to="/profile" class="menu-item" @click="showUserMenu = false">
+                <span class="menu-icon">👤</span> Profile
+              </RouterLink>
+              <RouterLink to="/analytics" class="menu-item" @click="showUserMenu = false">
+                <span class="menu-icon">📊</span> Analytics
+              </RouterLink>
+              <RouterLink to="/settings" class="menu-item" @click="showUserMenu = false">
+                <span class="menu-icon">⚙️</span> Settings
+              </RouterLink>
+              <div class="menu-divider"></div>
+              <button class="menu-item danger" @click="handleLogout">
+                <span class="menu-icon">🚪</span> Logout
+              </button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <RouterLink to="/signup" class="btn-cta">Get in touch</RouterLink>
+        </template>
       </div>
     </div>
   </nav>
 </template>
 
 <style scoped>
-nav {
+.navbar {
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
-  padding: 1.2rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(20, 24, 36, 0.95);
-  backdrop-filter: blur(10px); /* Optional: slight blur for sticky header feel if desired, or remove if user hates blur */
+  padding: 1rem 0;
+  background: rgba(13, 13, 13, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .nav-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem; /* Add internal padding */
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .nav-content {
+    padding: 0 40px;
+  }
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
-.links {
-  display: flex;
-  gap: 3rem;
+.logo-accent {
+  color: var(--accent-orange);
+  font-size: 0.875rem;
+}
+
+.nav-links {
+  display: none;
+  gap: 2.5rem;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
 }
 
 .nav-item {
   position: relative;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.95rem;
-  opacity: 0.7;
-  transition: opacity 0.3s;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  transition: color var(--speed-fast) var(--ease-smooth);
+  cursor: pointer;
 }
 
-.nav-item:hover {
-    opacity: 1;
+.nav-item:hover,
+.nav-item.router-link-active {
+  color: var(--text-primary);
 }
 
 .nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0%;
-    height: 1px;
-    background: var(--accent-cyan);
-    transition: width 0.3s var(--ease-spring);
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--accent-orange);
+  border-radius: 1px;
+  transition: width var(--speed-normal) var(--ease-spring);
 }
 
-.nav-item:hover::after {
-    width: 100%;
+.nav-item:hover::after,
+.nav-item.router-link-active::after {
+  width: 100%;
 }
 
-.cta-btn {
-    background: var(--gradient-main);
-    padding: 0.6rem 1.5rem;
-    border-radius: 30px;
-    font-weight: 600;
-    color: white;
-    box-shadow: 0 0 20px rgba(123, 47, 247, 0.4);
-    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.cta-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  background: var(--accent-orange);
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--speed-fast) var(--ease-smooth);
+}
+
+.btn-cta:hover {
+  background: var(--accent-orange-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--accent-orange-glow);
+  color: white;
+}
+
+/* User Menu */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--speed-fast);
+}
+
+.user-avatar:hover {
+  border-color: var(--accent-orange);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 260px;
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 0;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  animation: dropdownFade 0.2s var(--ease-smooth);
+}
+
+@keyframes dropdownFade {
+  from { 
+    opacity: 0; 
+    transform: translateY(-8px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.user-info {
+  padding: 0.75rem 1rem;
+}
+
+.user-info .name { 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  font-size: 0.9375rem;
+}
+
+.user-info .email { 
+  font-size: 0.8125rem; 
+  color: var(--text-muted); 
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+}
+
+.menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.5rem 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  color: var(--text-secondary);
+  transition: all var(--speed-fast);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.menu-icon {
+  font-size: 1rem;
+  width: 1.25rem;
+  text-align: center;
+}
+
+.menu-item.danger {
+  color: var(--accent-danger);
+}
+
+.menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.1);
 }
 </style>

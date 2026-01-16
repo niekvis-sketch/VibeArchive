@@ -1,6 +1,5 @@
 <script setup>
 import { useRouter } from 'vue-router'
-// import { vMotion } from '@vueuse/motion' - Removed explicit import
 
 const router = useRouter()
 </script>
@@ -8,23 +7,18 @@ const router = useRouter()
 <template>
   <div class="home">
     <section class="hero">
-      <div 
-        class="hero-content"
-        v-motion
-        :initial="{ opacity: 0, y: 100 }"
-        :enter="{ opacity: 1, y: 0, transition: { duration: 800, ease: 'easeOut' } }"
-      >
-        <h1 class="glow-text">
-            Digital <br>
-            <span class="gradient-text">Sanctuary</span>
+      <div class="hero-content">
+        <h1>
+          Digital <br>
+          <span class="accent-text">Archive</span>
         </h1>
         <p>Curating the future of digital experiences. Your personal archive for vibe-driven code.</p>
         
         <div class="cta-group">
-            <button class="primary-cta" @click="router.push('/projects')">
-                Explore Archive
-                <span class="icon">→</span>
-            </button>
+          <button class="btn-primary" @click="router.push('/projects')">
+            Explore Archive
+            <span class="icon">→</span>
+          </button>
         </div>
       </div>
     </section>
@@ -33,74 +27,73 @@ const router = useRouter()
 
 <style scoped>
 .home {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 4rem;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
 }
 
 .hero-content {
-    text-align: center;
-    max-width: 900px;
+  text-align: center;
+  max-width: 800px;
 }
 
 h1 {
-    font-size: 6rem;
-    line-height: 1;
-    margin-bottom: 2rem;
-    letter-spacing: -0.04em;
-    font-weight: 800;
+  font-size: clamp(3rem, 10vw, 6rem);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 
 p {
-    font-size: 1.5rem;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto 3rem;
-    line-height: 1.6;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 550px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
 }
 
-.primary-cta {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 1.2rem 3rem;
-    font-size: 1.2rem;
-    border-radius: 50px;
-    font-family: var(--font-display);
-    cursor: pointer;
-    transition: all 0.4s var(--ease-spring);
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    overflow: hidden;
+.cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.primary-cta::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-main);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.4s;
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: var(--accent-orange);
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--speed-fast) var(--ease-smooth);
 }
 
-.primary-cta:hover {
-    border-color: transparent;
-    transform: scale(1.05);
+.btn-primary:hover {
+  background: var(--accent-orange-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-orange-glow);
 }
 
-.primary-cta:hover::before {
-    opacity: 1;
+.icon {
+  transition: transform var(--speed-fast);
+}
+
+.btn-primary:hover .icon {
+  transform: translateX(4px);
 }
 
 @media (max-width: 768px) {
-    h1 { font-size: 3.5rem; }
+  p {
+    font-size: 1.125rem;
+  }
 }
 </style>

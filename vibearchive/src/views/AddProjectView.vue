@@ -100,13 +100,16 @@ const handleSubmit = async () => {
 
 <template>
   <div class="add-project container">
-    <h2 class="glow-text">{{ isEditMode ? 'Edit Vibe Project' : 'Add New Vibe Project' }}</h2>
+    <header class="page-header">
+      <p class="section-label">{{ isEditMode ? 'Edit' : 'Create' }}</p>
+      <h2>{{ isEditMode ? 'Update Project' : 'New Project' }}</h2>
+    </header>
     
     <div v-if="error" class="error-alert">
-      {{ error }}
+      <span>⚠️</span> {{ error }}
     </div>
 
-    <form @submit.prevent="handleSubmit" class="glass-panel form-content">
+    <form @submit.prevent="handleSubmit" class="form-content">
       <div class="form-section">
         <h3>Basic Info</h3>
         <BaseInput v-model="form.name" label="Project Name" required />
@@ -165,53 +168,107 @@ const handleSubmit = async () => {
 .add-project {
   max-width: 800px;
   margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.add-project h2 {
+  margin-bottom: 2rem;
 }
 
 .form-content {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--radius-xl);
   padding: 2rem;
 }
 
 .form-section {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.form-section:last-child {
+.form-section:last-of-type {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 h3 {
-  color: var(--color-secondary);
+  color: var(--accent-orange);
   margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .range-slider {
   width: 100%;
-  accent-color: var(--color-primary);
+  accent-color: var(--accent-orange);
+  background: var(--bg-elevated);
+  border-radius: 4px;
+  height: 6px;
+  margin-top: 0.5rem;
 }
 
 .rating-display {
   display: block;
   text-align: right;
-  color: var(--color-primary);
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
+  color: var(--accent-orange);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .file-label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all var(--speed-fast);
+  width: fit-content;
+}
+
+.file-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-orange);
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 .preview-container {
-  margin-top: 1rem;
-  border-radius: 8px;
+  margin-top: 0.5rem;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid var(--glass-border);
+  border: var(--border-card);
+  max-width: 400px;
 }
 
 .preview-container img {
@@ -222,14 +279,18 @@ h3 {
 .actions {
   display: flex;
   justify-content: flex-end;
+  padding-top: 1rem;
 }
 
 .error-alert {
-  background: rgba(255, 46, 151, 0.2);
-  color: #ff80bf;
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  border: 1px solid var(--color-accent);
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-danger);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 </style>

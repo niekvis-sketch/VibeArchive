@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import { db } from '../firebase/config';
-import { collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { db, auth } from '../firebase/config';
+import { collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, query, where } from 'firebase/firestore';
 
 export function useProjects() {
     const error = ref(null);
@@ -59,6 +59,10 @@ export function useProjects() {
         loading.value = true;
         
         try {
+            if (!auth.currentUser) {
+                throw new Error("You must be logged in to add a project");
+            }
+
             let imageUrl = '';
 
             // 1. Convert Image to Base64 String if it exists
@@ -77,6 +81,7 @@ export function useProjects() {
             const docRef = await addDoc(collection(db, 'projects'), {
                 ...projectData,
                 imageUrl, // Save the image string directly in the document
+                userId: auth.currentUser.uid, // Add User ID
                 createdAt: new Date()
             });
             console.log("Document written with ID: ", docRef.id);
@@ -95,7 +100,16 @@ export function useProjects() {
         error.value = null;
         loading.value = true;
         try {
-            const querySnapshot = await getDocs(collection(db, 'projects'));
+            let q;
+            if (auth.currentUser) {
+                 q = query(collection(db, 'projects'), where('userId', '==', auth.currentUser.uid));
+            } else {
+                // If not logged in, maybe return public projects? Or empty?
+                // For now, let's return empty or handle in component
+                return [];
+            }
+
+            const querySnapshot = await getDocs(q);
             const results = [];
             querySnapshot.forEach((doc) => {
                 results.push({ ...doc.data(), id: doc.id });
@@ -107,6 +121,26 @@ export function useProjects() {
             return [];
         } finally {
             loading.value = false;
+        }
+    };
+
+    const getUserProjects = async (userId) => {
+        error.value = null;
+        loading.value = true;
+        try {
+            const q = query(collection(db, 'projects'), where('userId', '==', userId));
+            const querySnapshot = await getDocs(q);
+            const results = [];
+            querySnapshot.forEach((doc) => {
+                results.push({ ...doc.data(), id: doc.id });
+            });
+            return results;
+        } catch (err) {
+             error.value = err.message;
+             console.error(err);
+             return [];
+        } finally {
+             loading.value = false;
         }
     };
 
@@ -123,5 +157,5 @@ export function useProjects() {
         }
     };
 
-    return { addProject, getProjects, getProject, updateProject, deleteProject, error, loading };
+    return { addProject, getProjects, getProject, updateProject, deleteProject, getUserProjects, error, loading };
 }
