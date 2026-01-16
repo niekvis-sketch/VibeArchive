@@ -66,12 +66,6 @@ const router = createRouter({
       beforeEnter: requireAuth
     },
     {
-      path: '/analytics',
-      name: 'analytics',
-      component: () => import('../views/AnalyticsView.vue'),
-      beforeEnter: requireAuth
-    },
-    {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue'),

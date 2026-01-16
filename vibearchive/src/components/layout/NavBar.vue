@@ -77,9 +77,6 @@ const closeMobileMenu = () => {
               <RouterLink to="/profile" class="menu-item" @click="showUserMenu = false">
                 <span class="menu-icon">👤</span> Profile
               </RouterLink>
-              <RouterLink to="/analytics" class="menu-item" @click="showUserMenu = false">
-                <span class="menu-icon">📊</span> Analytics
-              </RouterLink>
               <RouterLink to="/settings" class="menu-item" @click="showUserMenu = false">
                 <span class="menu-icon">⚙️</span> Settings
               </RouterLink>
@@ -142,9 +139,6 @@ const closeMobileMenu = () => {
               
               <RouterLink to="/profile" class="mobile-nav-item" @click="closeMobileMenu">
                 <span class="mobile-nav-icon">👤</span> Profile
-              </RouterLink>
-              <RouterLink to="/analytics" class="mobile-nav-item" @click="closeMobileMenu">
-                <span class="mobile-nav-icon">📊</span> Analytics
               </RouterLink>
               <RouterLink to="/settings" class="mobile-nav-item" @click="closeMobileMenu">
                 <span class="mobile-nav-icon">⚙️</span> Settings
