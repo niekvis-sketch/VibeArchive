@@ -16,106 +16,118 @@ const imageUrl = computed(() => {
 </script>
 
 <template>
-  <div class="project-card glass-panel">
+  <article class="project-card">
     <div class="card-image">
       <img :src="imageUrl" :alt="project.name" loading="lazy">
-      <div class="overlay">
+      <div class="image-overlay">
         <RouterLink :to="{ name: 'project-detail', params: { id: project.id }}" class="view-btn">
-          View Details
+          View
         </RouterLink>
       </div>
     </div>
     
     <div class="card-content">
-      <div class="header">
+      <div class="card-header">
         <h3>{{ project.name }}</h3>
         <div class="rating" v-if="project.vibeRating">
-          <span class="star">★</span> {{ project.vibeRating }}/10
+          <span class="star">★</span> {{ project.vibeRating }}
         </div>
       </div>
       
       <p class="description">{{ project.shortDescription || project.description }}</p>
       
-      <div class="tags">
+      <div class="tags" v-if="project.techStack?.length">
         <span 
-          v-for="tech in project.techStack" 
+          v-for="tech in project.techStack.slice(0, 4)" 
           :key="tech"
-          class="badge"
+          class="tag"
         >
           {{ tech }}
         </span>
       </div>
       
-      <div class="actions">
-        <a v-if="project.githubUrl" :href="project.githubUrl" target="_blank" rel="noopener">GitHub</a>
-        <a v-if="project.liveUrl" :href="project.liveUrl" target="_blank" rel="noopener">Live Demo</a>
+      <div class="card-actions">
+        <a v-if="project.githubUrl" :href="project.githubUrl" target="_blank" rel="noopener" class="action-link">
+          <span>GitHub</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a v-if="project.liveUrl" :href="project.liveUrl" target="_blank" rel="noopener" class="action-link accent">
+          <span>Live Demo</span>
+          <span class="arrow">↗</span>
+        </a>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 <style scoped>
 .project-card {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  transition: all var(--speed-normal) var(--ease-smooth);
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 240, 255, 0.15);
-  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card-image {
   position: relative;
-  height: 280px;
+  height: 240px;
   overflow: hidden;
+  background: var(--bg-elevated);
 }
 
 .card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s;
+  transition: transform var(--speed-slow) var(--ease-smooth);
 }
 
 .project-card:hover .card-image img {
   transform: scale(1.05);
 }
 
-.overlay {
+.image-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 14, 39, 0.8);
+  inset: 0;
+  background: rgba(13, 13, 13, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity var(--transition-speed);
+  transition: opacity var(--speed-normal);
 }
 
-.project-card:hover .overlay {
+.project-card:hover .image-overlay {
   opacity: 1;
 }
 
 .view-btn {
-  padding: 0.5rem 1.5rem;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  text-transform: uppercase;
-  font-family: var(--font-heading);
-  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  background: var(--accent-orange);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-full);
+  transition: all var(--speed-fast);
 }
 
 .view-btn:hover {
-  background: var(--color-primary);
-  color: var(--color-bg);
+  background: var(--accent-orange-light);
+  transform: scale(1.05);
+  color: white;
 }
 
 .card-content {
@@ -125,34 +137,42 @@ const imageUrl = computed(() => {
   flex-direction: column;
 }
 
-.header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-h3 {
+.card-header h3 {
   margin: 0;
   font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .rating {
-  font-family: var(--font-heading);
-  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
 }
 
 .star {
-  color: var(--color-accent);
+  color: var(--accent-orange);
 }
 
 .description {
-  color: rgba(224, 242, 255, 0.7);
-  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
   margin-bottom: 1rem;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
@@ -162,28 +182,57 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-.badge {
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--accent-orange);
   font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  background: rgba(0, 240, 255, 0.1);
-  color: var(--color-primary);
-  border: 1px solid rgba(0, 240, 255, 0.3);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 107, 53, 0.15);
 }
 
-.actions {
+.card-actions {
   display: flex;
   gap: 1rem;
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.actions a {
-  font-size: 0.9rem;
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--speed-fast);
+}
+
+.action-link:hover {
+  color: var(--text-primary);
+}
+
+.action-link.accent {
+  color: var(--accent-orange);
+}
+
+.action-link.accent:hover {
+  color: var(--accent-orange-light);
+}
+
+.action-link .arrow {
+  font-size: 0.75rem;
+  transition: transform var(--speed-fast);
+}
+
+.action-link:hover .arrow {
+  transform: translate(2px, -2px);
 }
 </style>

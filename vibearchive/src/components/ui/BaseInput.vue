@@ -39,7 +39,7 @@ defineEmits(['update:modelValue'])
       @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
       :required="required"
-      class="glass-input"
+      class="input-field"
       rows="4"
     ></textarea>
     
@@ -50,39 +50,50 @@ defineEmits(['update:modelValue'])
       @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
       :required="required"
-      class="glass-input"
+      class="input-field"
     >
   </div>
 </template>
 
 <style scoped>
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 label {
   display: block;
   margin-bottom: 0.5rem;
-  font-family: var(--font-heading);
-  color: var(--color-primary);
-  font-size: 0.9rem;
-}
-
-.glass-input {
-  width: 100%;
-  background: rgba(10, 14, 39, 0.4);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  color: var(--color-text);
-  padding: 0.8rem;
-  border-radius: 4px;
   font-family: var(--font-body);
-  transition: all var(--transition-speed);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
 }
 
-.glass-input:focus {
+.input-field {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  transition: all var(--speed-fast) var(--ease-smooth);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.input-field:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-  background: rgba(10, 14, 39, 0.8);
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px var(--accent-orange-glow);
+  background: var(--bg-card);
+}
+
+textarea.input-field {
+  resize: vertical;
+  min-height: 120px;
 }
 </style>

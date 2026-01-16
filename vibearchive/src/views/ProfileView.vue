@@ -216,226 +216,248 @@ const memberSince = computed(() => {
 
 <style scoped>
 .profile-page {
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+  padding-top: 1rem;
+  padding-bottom: 4rem;
 }
 
 .profile-grid {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 2rem;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
 }
 
-@media (max-width: 768px) {
-    .profile-grid {
-        grid-template-columns: 1fr;
-    }
+@media (min-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: 320px 1fr;
+  }
 }
 
 .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
 }
 
 .profile-card {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .avatar-section {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .avatar-wrapper {
-    position: relative;
-    width: 150px;
-    height: 150px;
+  position: relative;
+  width: 120px;
+  height: 120px;
 }
 
 .avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 .edit-avatar-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--speed-fast);
 }
 
 .edit-avatar-overlay:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 .icon {
-    font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .profile-identity h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-    color: #fff;
+  font-size: 1.375rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
 .username {
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
 }
 
 .joined {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.4);
-    margin-bottom: 2rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
 .stats-grid {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    width: 100%;
-    justify-content: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.5rem 0;
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 0;
 }
 
 .stat-item {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .stat-item .value {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .stat-item .label {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.action-buttons {
+  width: 100%;
 }
 
 .w-full {
-    width: 100%;
+  width: 100%;
 }
 
 .profile-details {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .details-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .details-header h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .edit-actions {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 0.75rem;
 }
 
 .details-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .display-value {
-    font-size: 1.1rem;
-    color: #fff;
+  font-size: 1rem;
+  color: var(--text-primary);
 }
 
 .bio-display {
-    white-space: pre-wrap;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: var(--text-secondary);
 }
 
-.input-field, .textarea-field {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    color: white;
-    font-family: inherit;
-    transition: border-color 0.2s;
+.input-field,
+.textarea-field {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  transition: all var(--speed-fast);
 }
 
-.input-field:focus, .textarea-field:focus {
-    outline: none;
-    border-color: var(--primary-color, #6366f1);
+.input-field:focus,
+.textarea-field:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px var(--accent-orange-glow);
 }
 
 .textarea-field {
-    resize: vertical;
+  resize: vertical;
+  min-height: 120px;
 }
 
 .char-count {
-    text-align: right;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.4);
-    margin-top: 0.25rem;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
 }
 
 .email-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .error-banner {
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    color: #fca5a5;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--accent-danger);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .tech-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .tag {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--accent-orange);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 107, 53, 0.15);
 }
 </style>
